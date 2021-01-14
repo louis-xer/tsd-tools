@@ -5,6 +5,8 @@ const TotalSupply =
 const ReadContract =
   'https://api.etherscan.io/api?module=contract&action=getabi&address=0xA5BE4aE152D77682B466A9F00b0Cb0dD1432820B&apikey=MN126VZ8YJI2AMRIT61V5WETK7CWCEW384'
 
+const PriceAndTime = 'https://api.truedollar.finance/v1/pair-infos'
+
 function getTotalSupply() {
   return axios.get(TotalSupply)
 }
@@ -13,4 +15,8 @@ function getContractABI() {
   return axios.get(ReadContract)
 }
 
-export { getTotalSupply, getContractABI }
+function getPriceAndTime() {
+  return axios.get(PriceAndTime)
+}
+
+export { getTotalSupply, getContractABI, getPriceAndTime }

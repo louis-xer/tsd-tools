@@ -50,8 +50,8 @@ const tableColumns = [
   },
   {
     title: 'Debt',
-    dataIndex: 'lessDebt',
-    key: 'lessDebt',
+    dataIndex: 'newDebt',
+    key: 'newDebt',
   },
   {
     title: 'Redeemable',
@@ -121,7 +121,7 @@ class DashboardAlpha extends Component {
       const Token0 = value[13]
       const PoolTotalBonded = value[14]
       const PoolTotalStaged = value[15]
-      console.log('value', value)
+      // console.log('value', value)
       this.setState({
         Epoch,
         EpochTime,
@@ -199,10 +199,29 @@ class DashboardAlpha extends Component {
     const Epoch = Number(this.state.EpochTime) + 1
 
     const data = this.state.AllRegulations.map((d, i) => {
-      d.data.newBonded = (Number(d.data.newBonded) / 1000000000000000000).toFixed(3)
-      d.data.price = (Number(d.data.price) / 1000000000000000000).toFixed(3)
+      d.data.newBonded
+        ? (d.data.newBonded = (
+            Number(d.data.newBonded) / 1000000000000000000
+          ).toLocaleString(undefined, { maximumFractionDigits: 2 }))
+        : (d.data.newBonded = 0)
+      d.data.newDebt
+        ? (d.data.newDebt = (Number(d.data.newDebt) / 1000000000000000000).toLocaleString(
+            undefined,
+            { maximumFractionDigits: 2 },
+          ))
+        : (d.data.newDebt = 0)
+      d.data.price = (Number(d.data.price) / 1000000000000000000).toLocaleString(undefined, {
+        maximumFractionDigits: 3,
+      })
+      d.data.newRedeemable
+        ? (d.data.newRedeemable = (
+            Number(d.data.newRedeemable) / 1000000000000000000
+          ).toLocaleString(undefined, { maximumFractionDigits: 3 }))
+        : (d.data.newRedeemable = 0)
       return { ...d.data, id: i }
     })
+
+    console.log('Data', data)
 
     const Price = this.state.USDCUNIPair / this.state.TSDUNIPair
     const MarketCap = (Price * this.state.TotalSupply) / 1000000
@@ -256,47 +275,6 @@ class DashboardAlpha extends Component {
             </div>
           </div>
 
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  + {increaseBy.toLocaleString(undefined, { maximumFractionDigits: 0 })} TSD
-                </div>
-                <div className="text-uppercase">$TSD Supply will increase </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  + {daoBonding.toLocaleString(undefined, { maximumFractionDigits: 0 })} TSD
-                </div>
-                <div className="text-uppercase">$TSD for DAO Bonding</div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {' '}
-                  + {lpBonding.toLocaleString(undefined, { maximumFractionDigits: 0 })} TSD
-                </div>
-                <div className="text-uppercase">$TSD for LP Bonding</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">1:00 Hour</div>
-                <div className="text-uppercase">Period: 1 Epoch</div>
-              </div>
-            </div>
-          </div>
-
           <div className="col-xl-4">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
@@ -330,11 +308,127 @@ class DashboardAlpha extends Component {
             </div>
           </div>
 
+          <div className="col-xl-6">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(TSDUNIPair).toLocaleString(undefined, { maximumFractionDigits: 0 })} TSD
+                </div>
+                <div className="text-uppercase">TSD - UNI Pair</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-6">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(USDCUNIPair).toLocaleString(undefined, { maximumFractionDigits: 0 })} USDC
+                </div>
+                <div className="text-uppercase">USDC - UNI Pair</div>
+              </div>
+            </div>
+          </div>
+
           <div className="col-xl-3">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {((LPHourly - 1) * 100).toFixed(2)}%
+                  +{' '}
+                  {Number(SpotPrice) < 1
+                    ? '0'
+                    : increaseBy.toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
+                  TSD
+                </div>
+                <div className="text-uppercase">$TSD Supply will increase </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-3">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  +{' '}
+                  {Number(SpotPrice) < 1
+                    ? '0'
+                    : daoBonding.toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
+                  TSD
+                </div>
+                <div className="text-uppercase">$TSD for DAO Bonding</div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-3">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {' '}
+                  +{' '}
+                  {Number(SpotPrice) < 1
+                    ? '0'
+                    : lpBonding.toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
+                  TSD
+                </div>
+                <div className="text-uppercase">$TSD for LP Bonding</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-3">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">1:00 Hour</div>
+                <div className="text-uppercase">Period: 1 Epoch</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {(Number(this.state.TotalCoupons) / 1e18).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
+                </div>
+                <div className="text-uppercase">Coupons</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {(Number(this.state.TotalDebt) / 1e18).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}{' '}
+                  (35.00%)
+                </div>
+                <div className="text-uppercase">Debt</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {(Number(this.state.TotalRedeemable) / 1e18).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
+                </div>
+                <div className="text-uppercase">Redeemable</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-3">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(SpotPrice) < 1 ? '0' : ((LPHourly - 1) * 100).toFixed(2)}% (
+                  {((LPHourly - 1) * 100).toFixed(2)}%)
                 </div>
                 <div className="text-uppercase">LP hourly</div>
               </div>
@@ -345,7 +439,8 @@ class DashboardAlpha extends Component {
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {((LPDaily - 1) * 100).toFixed(2)}%
+                  {Number(SpotPrice) < 1 ? '0' : ((LPDaily - 1) * 100).toFixed(2)}% (
+                  {((LPDaily - 1) * 100).toFixed(2)}%)
                 </div>
                 <div className="text-uppercase">LP daily</div>
               </div>
@@ -356,7 +451,8 @@ class DashboardAlpha extends Component {
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {((DAO2 - 1) * 100).toFixed(2)}%
+                  {Number(SpotPrice) < 1 ? '0' : ((DAO2 - 1) * 100).toFixed(2)}% (
+                  {((DAO2 - 1) * 100).toFixed(2)}%)
                 </div>
                 <div className="text-uppercase">DAO hourly</div>
               </div>
@@ -367,7 +463,8 @@ class DashboardAlpha extends Component {
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {((DAO2 - 1) * 24 * 100).toFixed(2)}%
+                  {Number(SpotPrice) < 1 ? '0' : ((DAO2 - 1) * 24 * 100).toFixed(2)}% (
+                  {((DAO2 - 1) * 24 * 100).toFixed(2)}%)
                 </div>
                 <div className="text-uppercase">DAO daily</div>
               </div>
@@ -377,7 +474,9 @@ class DashboardAlpha extends Component {
           <div className="col-xl-6">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">{LpWeekly}%</div>
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(SpotPrice) < 1 ? '0' : LpWeekly}% ({LpWeekly}%)
+                </div>
                 <div className="text-uppercase">LP Weekly</div>
               </div>
             </div>
@@ -386,7 +485,9 @@ class DashboardAlpha extends Component {
           <div className="col-xl-6">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
-                <div className="font-size-30 font-weight-bold text-dark mb-n2">{DaoWeekly}%</div>
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(SpotPrice) < 1 ? '0' : DaoWeekly}% ({DaoWeekly}%)
+                </div>
                 <div className="text-uppercase">DAO Weekly</div>
               </div>
             </div>
@@ -411,17 +512,6 @@ class DashboardAlpha extends Component {
                       target="_blank"
                     >
                       {Token0}
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Etherscan: </strong>
-                    <a
-                      href="https://etherscan.io/token/0x4846239FDF4D4C1AEB26729fa064B0205acA90e1"
-                      target="_blank"
-                    >
-                      0x55b0c2eee5d48af6d2a65507319d20453e9f97b6
                     </a>
                   </p>
                 </div>
@@ -579,12 +669,18 @@ class DashboardAlpha extends Component {
                 </div>
                 <div>
                   <p>
-                    <strong>Total Debt:</strong> {this.state.TotalDebt}
+                    <strong>Total Debt:</strong>{' '}
+                    {(Number(this.state.TotalDebt) / 1e18).toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
                 <div>
                   <p>
-                    <strong>Total Coupons:</strong> {this.state.TotalCoupons}
+                    <strong>Total Coupons:</strong>{' '}
+                    {(Number(this.state.TotalCoupons) / 1e18).toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
               </div>
@@ -601,22 +697,26 @@ class DashboardAlpha extends Component {
                 </div>
                 <div>
                   <p>
-                    <strong>LP hourly:</strong> {((LPHourly - 1) * 100).toFixed(2)}%
+                    <strong>LP hourly:</strong>{' '}
+                    {Number(SpotPrice) < 1 ? '0' : ((LPHourly - 1) * 100).toFixed(2)}%
                   </p>
                 </div>
                 <div>
                   <p>
-                    <strong>LP daily:</strong> {((LPDaily - 1) * 100).toFixed(2)}%
+                    <strong>LP daily:</strong>{' '}
+                    {Number(SpotPrice) < 1 ? '0' : ((LPDaily - 1) * 100).toFixed(2)}%
                   </p>
                 </div>
                 <div>
                   <p>
-                    <strong>DAO hourly:</strong> {((DAO2 - 1) * 100).toFixed(2)}%
+                    <strong>DAO hourly:</strong>{' '}
+                    {Number(SpotPrice) < 1 ? '0' : ((DAO2 - 1) * 100).toFixed(2)}%
                   </p>
                 </div>
                 <div>
                   <p>
-                    <strong>DAO daily:</strong> {((DAO2 ** 24 - 1) * 100).toFixed(2)}%
+                    <strong>DAO daily:</strong>{' '}
+                    {Number(SpotPrice) < 1 ? '0' : ((DAO2 ** 24 - 1) * 100).toFixed(2)}%
                   </p>
                 </div>
               </div>

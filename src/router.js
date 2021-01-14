@@ -13,6 +13,21 @@ const routes = [
     Component: lazy(() => import('pages/dashboard/alpha')),
     exact: true,
   },
+  {
+    path: '/homebnb',
+    Component: lazy(() => import('pages/dashboard/bnb')),
+    exact: true,
+  },
+  {
+    path: '/yield',
+    Component: lazy(() => import('pages/dashboard/load')),
+    exact: true,
+  },
+  {
+    path: '/yieldbnb',
+    Component: lazy(() => import('pages/dashboard/bnb')),
+    exact: true,
+  },
   // Auth Pages
   {
     path: '/auth/login',

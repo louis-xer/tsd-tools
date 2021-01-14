@@ -1,0 +1,6 @@
+var express = require('express')
+var cors = require('cors')
+var app = express()
+app.use(cors())
+app.use('/twap', express.static('/www/wwwroot/tsd-tools/src/pages/scripts/twap'))
+app.listen(5000)
