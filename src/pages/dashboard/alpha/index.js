@@ -149,32 +149,24 @@ class DashboardAlpha extends Component {
       Number(this.state.TotalStaged) +
       Number(this.state.TotalRedeemable)
 
-    const TotalSupply = (this.state.TotalSupply / 1000000000000000000).toFixed(3)
-    const TotalBonded = (this.state.TotalBonded / 1000000000000000000).toFixed(3)
-    const TotalStaged = (this.state.TotalStaged / 1000000000000000000).toFixed(3)
-    const TSDUNIPair = (this.state.TSDUNIPair / 1000000000000000000).toFixed(3)
-    const USDCUNIPair = (this.state.USDCUNIPair / 1000000).toFixed(3)
+    const TotalSupply = (this.state.TotalSupply / 1e18).toFixed(3)
+    const TotalBonded = (this.state.TotalBonded / 1e18).toFixed(3)
+    const TotalStaged = (this.state.TotalStaged / 1e18).toFixed(3)
+    const TSDUNIPair = (this.state.TSDUNIPair / 1e18).toFixed(3)
+    const USDCUNIPair = (this.state.USDCUNIPair / 1e6).toFixed(3)
     const TotalRedeemable = this.state.TotalRedeemable
 
     const Token0 = this.state.Token0
-    const TotalSupplyUni = (this.state.TotalSupplyUni / 1000000000000000000).toFixed(6)
+    const TotalSupplyUni = (this.state.TotalSupplyUni / 1e18).toFixed(6)
 
-    const DAO = (Number(DaoTotalSupply * 100) / Number(TotalSupply) / 1000000000000000000).toFixed(
-      2,
-    )
-    const Bonded = (
-      Number(TotalBonded * 100) / Number(DaoTotalSupply / 1000000000000000000)
-    ).toFixed(2)
-    const Staged = (
-      Number(TotalStaged * 100) / Number(DaoTotalSupply / 1000000000000000000)
-    ).toFixed(2)
-    const Redeemable = Number(TotalRedeemable * 100) / Number(DaoTotalSupply / 1000000000000000000)
+    const DAO = (Number(DaoTotalSupply * 100) / Number(TotalSupply) / 1e18).toFixed(2)
+    const Bonded = (Number(TotalBonded * 100) / Number(DaoTotalSupply / 1e18)).toFixed(2)
+    const Staged = (Number(TotalStaged * 100) / Number(DaoTotalSupply / 1e18)).toFixed(2)
+    const Redeemable = Number(TotalRedeemable * 100) / Number(DaoTotalSupply / 1e18)
 
-    const increaseBy = ((Number(this.state.TotalSupply) / 1000000000000000000) * 4) / 100
-    const daoBonding =
-      ((((Number(this.state.TotalSupply) / 1000000000000000000) * 4) / 100) * 60) / 100
-    const lpBonding =
-      ((((Number(this.state.TotalSupply) / 1000000000000000000) * 4) / 100) * 40) / 100
+    const increaseBy = ((Number(this.state.TotalSupply) / 1e18) * 4) / 100
+    const daoBonding = ((((Number(this.state.TotalSupply) / 1e18) * 4) / 100) * 60) / 100
+    const lpBonding = ((((Number(this.state.TotalSupply) / 1e18) * 4) / 100) * 40) / 100
 
     const SpotPrice = (USDCUNIPair / TSDUNIPair).toFixed(3)
     const LPStaged = (
@@ -200,23 +192,22 @@ class DashboardAlpha extends Component {
 
     const data = this.state.AllRegulations.map((d, i) => {
       d.data.newBonded
-        ? (d.data.newBonded = (
-            Number(d.data.newBonded) / 1000000000000000000
-          ).toLocaleString(undefined, { maximumFractionDigits: 2 }))
+        ? (d.data.newBonded = (Number(d.data.newBonded) / 1e18).toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          }))
         : (d.data.newBonded = 0)
       d.data.newDebt
-        ? (d.data.newDebt = (Number(d.data.newDebt) / 1000000000000000000).toLocaleString(
-            undefined,
-            { maximumFractionDigits: 2 },
-          ))
+        ? (d.data.newDebt = (Number(d.data.newDebt) / 1e18).toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          }))
         : (d.data.newDebt = 0)
-      d.data.price = (Number(d.data.price) / 1000000000000000000).toLocaleString(undefined, {
+      d.data.price = (Number(d.data.price) / 1e18).toLocaleString(undefined, {
         maximumFractionDigits: 3,
       })
       d.data.newRedeemable
-        ? (d.data.newRedeemable = (
-            Number(d.data.newRedeemable) / 1000000000000000000
-          ).toLocaleString(undefined, { maximumFractionDigits: 3 }))
+        ? (d.data.newRedeemable = (Number(d.data.newRedeemable) / 1e18).toLocaleString(undefined, {
+            maximumFractionDigits: 3,
+          }))
         : (d.data.newRedeemable = 0)
       return { ...d.data, id: i }
     })
@@ -224,7 +215,7 @@ class DashboardAlpha extends Component {
     console.log('Data', data)
 
     const Price = this.state.USDCUNIPair / this.state.TSDUNIPair
-    const MarketCap = (Price * this.state.TotalSupply) / 1000000
+    const MarketCap = (Price * this.state.TotalSupply) / 1e6
 
     const TotalSupply2 = Number(this.state.TotalSupply)
 
@@ -489,236 +480,6 @@ class DashboardAlpha extends Component {
                   {Number(SpotPrice) < 1 ? '0' : DaoWeekly}% ({DaoWeekly}%)
                 </div>
                 <div className="text-uppercase">DAO Weekly</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="cui__utils__heading">
-          <strong>TSD Information</strong>
-        </div>
-
-        <div className="row">
-          <div className="col-xl-6">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div className="cui__utils__heading">
-                  <strong>Token Information</strong>
-                </div>
-                <div>
-                  <p>
-                    <strong>Token True Seigniorage Dollar: </strong>
-                    <a
-                      href="https://etherscan.io/address/0x4846239FDF4D4C1AEB26729fa064B0205acA90e1"
-                      target="_blank"
-                    >
-                      {Token0}
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Dextools: </strong>
-                    <a
-                      href="https://www.dextools.io/app/uniswap/pair-explorer/0x55b0c2eee5d48af6d2a65507319d20453e9f97b6"
-                      target="_blank"
-                    >
-                      0x55b0c2eee5d48af6d2a65507319d20453e9f97b6
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Website: </strong>
-                    <a href="https://truedollar.finance/" target="_blank">
-                      https://truedollar.finance/
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Telegram: </strong>
-                    <a href="https://t.me/TrueSeigniorageDollar" target="_blank">
-                      https://t.me/TrueSeigniorageDollar
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Twitter: </strong>
-                    <a href="https://twitter.com/TrueSeigniorage" target="_blank">
-                      https://twitter.com/TrueSeigniorage
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Github: </strong>
-                    <a href="https://github.com/TrueDollar" target="_blank">
-                      https://github.com/TrueDollar
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Medium: </strong>
-                    <a href="https://trueseigniorage.medium.com/" target="_blank">
-                      https://trueseigniorage.medium.com/
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div>
-                  <p>
-                    <strong>Epoch Length:</strong> 3,600 Seconds (1 Hour)
-                  </p>{' '}
-                </div>
-                <div>
-                  <p>
-                    <strong>Advance incentive:</strong> 25 TSD
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>DAO Lockup:</strong> 72 Epochs
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>LP Lockup:</strong> 24 Epochs
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Source:</strong> Uniswap USDC/TSD pair
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Method:</strong>{' '}
-                    <a href="https://uniswap.org/docs/v2/core-concepts/oracles/" target="_blank">
-                      Uniswap V2 Time Weighted Average Price (TWAP)
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Oracle Minimum:</strong> 10,000 USDC
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Period:</strong> 1 Epoch (1 Hour)
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body overflow-hidden position-relative">
-                <div>
-                  <p>
-                    <strong>Total Supply:</strong>{' '}
-                    {Number(TotalSupply).toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
-                    TSD
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Total Bonded: </strong>
-                    {Number(TotalBonded).toLocaleString(undefined, {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    TSD
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Total Staged:</strong>{' '}
-                    {Number(TotalStaged).toLocaleString(undefined, { maximumFractionDigits: 0 })}{' '}
-                    TSD
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Spot Price:</strong>{' '}
-                    {Number(SpotPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })} USDC
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>TSD - UNI Pair:</strong>{' '}
-                    {Number(TSDUNIPair).toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>USDC - UNI Pair:</strong>{' '}
-                    {Number(USDCUNIPair).toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Total Redeemable:</strong> {this.state.TotalRedeemable}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Total Debt:</strong>{' '}
-                    {(Number(this.state.TotalDebt) / 1e18).toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                    })}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>Total Coupons:</strong>{' '}
-                    {(Number(this.state.TotalCoupons) / 1e18).toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                    })}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xl-3">
-            <div className="card">
-              <div className="card-body">
-                <div className="cui__utils__heading">
-                  <strong>Yield Farming Info</strong>
-                </div>
-                <div>
-                  <p>
-                    <strong>LP hourly:</strong>{' '}
-                    {Number(SpotPrice) < 1 ? '0' : ((LPHourly - 1) * 100).toFixed(2)}%
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>LP daily:</strong>{' '}
-                    {Number(SpotPrice) < 1 ? '0' : ((LPDaily - 1) * 100).toFixed(2)}%
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>DAO hourly:</strong>{' '}
-                    {Number(SpotPrice) < 1 ? '0' : ((DAO2 - 1) * 100).toFixed(2)}%
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <strong>DAO daily:</strong>{' '}
-                    {Number(SpotPrice) < 1 ? '0' : ((DAO2 ** 24 - 1) * 100).toFixed(2)}%
-                  </p>
-                </div>
               </div>
             </div>
           </div>

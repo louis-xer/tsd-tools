@@ -7,6 +7,12 @@ import { connect } from 'react-redux'
 import Layout from 'layouts'
 
 const routes = [
+  //Infomations
+  {
+    path: '/tokeninfo',
+    Component: lazy(() => import('pages/dashboard/tokeninfo')),
+    exact: true,
+  },
   // Dashboards
   {
     path: '/home',

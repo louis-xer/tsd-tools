@@ -2,6 +2,16 @@ export default async function getMenuData() {
   return [
     {
       category: true,
+      title: 'TSD Informations',
+    },
+    {
+      title: 'Token Information',
+      key: 'tokeninfo',
+      icon: 'fe fe-info',
+      url: '/tokeninfo',
+    },
+    {
+      category: true,
       title: 'Etherscan',
     },
     {
