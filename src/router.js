@@ -31,7 +31,7 @@ const routes = [
   },
   {
     path: '/yieldbnb',
-    Component: lazy(() => import('pages/dashboard/bnb')),
+    Component: lazy(() => import('pages/dashboard/load-2')),
     exact: true,
   },
   // Auth Pages

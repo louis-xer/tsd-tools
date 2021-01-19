@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 function epochformatted() {
   const epochStart = 1609473600
-  const epochPeriod = 900
+  const epochPeriod = 60 * 60
   const minute = 60
   const unixTimeSec = Math.floor(Date.now() / 1000)
 

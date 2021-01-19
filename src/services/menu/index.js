@@ -36,11 +36,11 @@ export default async function getMenuData() {
       icon: 'fe fe-home',
       url: '/homebnb',
     },
-    {
-      title: 'Yield Farming Info (BNB)',
-      key: 'yieldbnb',
-      icon: 'fe fe-dollar-sign',
-      url: '/yieldbnb',
-    },
+    // {
+    //   title: 'Yield Farming Info (BNB)',
+    //   key: 'yieldbnb',
+    //   icon: 'fe fe-dollar-sign',
+    //   url: '/yieldbnb',
+    // },
   ]
 }
