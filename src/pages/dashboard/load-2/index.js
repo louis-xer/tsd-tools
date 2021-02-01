@@ -1444,8 +1444,8 @@ const Contracts = {
     BootstrappingPeriod: 288,
     BootstrappingPrice: 1.44,
     EpochPeriod: 900,
-    DaoLockupPeriods: 72,
-    PoolLockupPeriods: 24,
+    DaoLockupPeriods: 288,
+    PoolLockupPeriods: 192,
     PoolRatio: 0.4,
     DaoRatio: 0.6,
     SupplyChangeLimit: 0.04,
@@ -1578,8 +1578,8 @@ export default class load extends Component {
     }
 
     const epoch = Number(this.state.fluidEpoch)
-    const fluidEpochs = 72
-    const fluidBlocks = Number((Number(fluidEpochs * 3600) / 13.5) * 1.1) //10% leeway
+    const fluidEpochs = 288
+    const fluidBlocks = Number((Number(fluidEpochs * 900) / 13.5) * 1.1) //10% leeway
     const blockNumber = await provider.getBlockNumber()
     const NumberFillter = Number(blockNumber) - Number(fluidBlocks)
     const unbonds = await DAO.queryFilter(
@@ -1613,7 +1613,7 @@ export default class load extends Component {
       parseInt(NumberFillter),
       Number(blockNumber),
     )
-    const fluidEpochsLP = 24
+    const fluidEpochsLP = 192
     for (let i = 0; i < fluidEpochsLP; i++) {
       let filtered = unbondsLP.filter(u => epoch + i + 1 - fluidEpochsLP == u.args?.start / 1)
       let unbonding = filtered.map(u => u.args?.value / 1e18).reduce((x, y) => x + y, 0)
@@ -1660,7 +1660,7 @@ export default class load extends Component {
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
                   {this.state.TokenBalanceUNI}
                 </div>
-                <div className="text-uppercase">Token Balance UNI</div>
+                <div className="text-uppercase">Token Balance Pancake Swap</div>
                 <div></div>
               </div>
             </div>
@@ -1670,7 +1670,9 @@ export default class load extends Component {
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
-                  {Number(this.state.TokenBalanceBUSD) / 1e12}
+                  {Number(Number(this.state.TokenBalanceBUSD) / 1e12).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
                 </div>
                 <div className="text-uppercase">Token Balance BUSD</div>
                 <div></div>

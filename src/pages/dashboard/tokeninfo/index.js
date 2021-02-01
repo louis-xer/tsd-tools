@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import { Button, Table } from 'antd'
-import axios from 'axios'
-import NextEpoch from '../../../components/NextEpoch/EpochTimeCoutdown'
 import getPoolAddress from '../../../utils/pool'
 import { TSD, TSDS, UNI, USDC } from '../../../constants/tokens'
 import {
-  getCouponPremium,
-  getPoolTotalClaimable,
-  getPoolTotalRewarded,
   getTokenBalance,
   getTokenTotalSupply,
   getTotalBonded,
@@ -16,12 +11,6 @@ import {
   getTotalDebt,
   getTotalRedeemable,
   getTotalStaged,
-  getBalanceBonded,
-  getBalanceOfStaged,
-  getFluidUntil,
-  getLockedUntil,
-  getStatusOf,
-  getTokenAllowance,
   getEpoch,
   getEpochTime,
   getPool,
@@ -258,11 +247,6 @@ class TokenInfo extends Component {
                     </a>
                   </p>
                 </div>
-                <div>
-                  <p>
-                    <strong>Oracle Minimum:</strong> 10,000 USDC
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -303,7 +287,7 @@ class TokenInfo extends Component {
         </div>
 
         <div className="row">
-          <div className="col-xl-6">
+          <div className="col-xl-4">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
@@ -325,7 +309,7 @@ class TokenInfo extends Component {
             </div>
           </div>
 
-          <div className="col-xl-2">
+          <div className="col-xl-4">
             <div className="card">
               <div className="card-body overflow-hidden position-relative">
                 <div className="font-size-30 font-weight-bold text-dark mb-n2">
@@ -338,7 +322,186 @@ class TokenInfo extends Component {
         </div>
 
         <div className="cui__utils__heading">
-          <strong>Binance (Comming Soon)</strong>
+          <strong>Binance</strong>
+        </div>
+
+        <div className="cui__utils__heading">
+          <strong>BSCSCAN: </strong>
+          <a
+            href="https://bscscan.com/address/0x86cb969adbf969aaefd30d4ed5193b4b8e6c6218"
+            target="_blank"
+          >
+            {' '}
+            {Token0}
+          </a>
+        </div>
+
+        <div className="row">
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div>
+                  <p>
+                    <strong>Tools: </strong>
+                    <a
+                      href="https://bscscan.com/address/0x86cb969adbf969aaefd30d4ed5193b4b8e6c6218"
+                      target="_blank"
+                    >
+                      0x55b0c2eee5d48af6d2a65507319d20453e9f97b6
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Website: </strong>
+                    <a href="https://truedollar.finance/" target="_blank">
+                      https://truedollar.finance/
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Telegram: </strong>
+                    <a href="https://t.me/TrueSeigniorageDollar" target="_blank">
+                      https://t.me/TrueSeigniorageDollar
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Twitter: </strong>
+                    <a href="https://twitter.com/TrueSeigniorage" target="_blank">
+                      https://twitter.com/TrueSeigniorage
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Github: </strong>
+                    <a href="https://github.com/TrueDollar" target="_blank">
+                      https://github.com/TrueDollar
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Medium: </strong>
+                    <a href="https://trueseigniorage.medium.com/" target="_blank">
+                      https://trueseigniorage.medium.com/
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div>
+                  <p>
+                    <strong>Advance incentive:</strong> 1 TSD
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>DAO Lockup:</strong> 288 Epochs
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>LP Lockup:</strong> 192 Epochs
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Source:</strong> Uniswap USDC/TSD pair
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Method:</strong>{' '}
+                    <a href="https://uniswap.org/docs/v2/core-concepts/oracles/" target="_blank">
+                      Uniswap V2 Time Weighted Average Price (TWAP)
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Oracle Minimum:</strong> 10,000 USDC
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body">
+                <div className="cui__utils__heading">
+                  <strong>Yield Farming Info</strong>
+                </div>
+                <div>
+                  <p>
+                    <strong>LP hourly:</strong> {((LPHourly - 1) * 100).toFixed(2)}%
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>LP daily:</strong> {((LPDaily - 1) * 100).toFixed(2)}%
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>DAO hourly:</strong> {((DAO2 - 1) * 100).toFixed(2)}%
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>DAO daily:</strong> {((DAO2 - 1) * 24 * 100).toFixed(2)}%
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <strong>Epoch Length:</strong> 900 Seconds (15 minutes)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {MarketCap.toLocaleString(undefined, { maximumFractionDigits: 0 })} $
+                </div>
+                <div className="text-uppercase">Market Cap</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {Number(TotalSupply).toLocaleString(undefined, { maximumFractionDigits: 0 })} TSD
+                </div>
+                <div className="text-uppercase">Total Supply</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-xl-4">
+            <div className="card">
+              <div className="card-body overflow-hidden position-relative">
+                <div className="font-size-30 font-weight-bold text-dark mb-n2">
+                  {SpotPrice.toLocaleString(undefined, { maximumFractionDigits: 0 })} USDC
+                </div>
+                <div className="text-uppercase">Spot Price</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

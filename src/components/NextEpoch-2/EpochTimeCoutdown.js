@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 function epochformatted() {
   const epochStart = 1609473600
-  const epochPeriod = 60 * 60
+  const epochPeriod = 60 * 15
   const minute = 60
   const unixTimeSec = Math.floor(Date.now() / 1000)
 
@@ -12,7 +12,7 @@ function epochformatted() {
   const epochMinute = Math.floor(epochRemainder / minute)
   epochRemainder -= epochMinute * minute
 
-  const minutes = 60 - epochMinute
+  const minutes = 15 - epochMinute
   const second = 60 - epochRemainder
 
   return `00:${minutes > 9 ? minutes : '0' + minutes.toString()}:${
